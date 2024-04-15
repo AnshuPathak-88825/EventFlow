@@ -8,8 +8,10 @@ export async function POST(req: NextRequest, res: NextResponse): Promise<NextRes
     try {
         await dbConnect();
         const { email, password, username } = await req.json();
-        const jwtsecret = process.env.JWT_TOKEN || "hafsdasfasfasdfsdafasdf";
-
+        const jwt_secret = await process.env.JWT_SECRET;
+        if (!jwt_secret) {
+            throw new Error("JWT secret not found in environment variables")
+        }
         let existingUser;
         if (username) {
             existingUser = await User.findOne({ username });
@@ -26,7 +28,7 @@ export async function POST(req: NextRequest, res: NextResponse): Promise<NextRes
             return NextResponse.json("Incorrect password");
         }
 
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwtsecret, { expiresIn: "1y" });
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwt_secret, { expiresIn: "1y" });
         const response = NextResponse.json(existingUser);
         response.cookies.set("User", token);
         return response;
