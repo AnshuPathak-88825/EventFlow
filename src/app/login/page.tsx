@@ -10,90 +10,66 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRouter } from 'next/navigation'
+
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 type Props = {}
 
 const page = (props: Props) => {
-  return (
-    <div className="flex h-screen items-center justify-center">
+    return (
+        <div className="flex h-screen items-center justify-center">
 
-            <div className="w-1/4 ">
 
-                <div className="mb-2">
-                    <div className="font-bold p-4  mb-4">
-                        <Link href={"/"} className="flex justify-center gap-2  align-center">
-                            <p className="rounded-lg border-2 border-b-4 border-r-4 border-black px-2 py-1 text-xl font-bold transition-all hover:-translate-y-[2px] md:block dark:border-white">
-                            eventflow
-                            </p>
-                        </Link>
-                    </div>
-                    <div className="text-center  text-xl ">Sign in</div>
-                </div>
-                {/* <form onSubmit={onSubmit}>
-                    <div className="grid gap-2">
-                        <div className="grid gap-1">
-                            <Label className="sr-only" htmlFor="email">
-                                Email
-                            </Label>
+            <Card className="mx-auto max-w-sm">
+                <CardHeader>
+                    <CardTitle className="text-2xl">Login</CardTitle>
+                    <CardDescription>
+                        Enter your email below to login to your account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid gap-4">
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email</Label>
                             <Input
                                 id="email"
-                                placeholder="name@example.com"
                                 type="email"
-                                autoCapitalize="none"
-                                autoComplete="email"
-                                autoCorrect="off"
-                                disabled={isLoading}
+                                placeholder="m@example.com"
+                                required
                             />
                         </div>
-                        <Button disabled={isLoading}>Sign In with Email</Button>
+                        <div className="grid gap-2">
+                            <div className="flex items-center">
+                                <Label htmlFor="password">Password</Label>
+                                <Link href="#" className="ml-auto inline-block text-sm underline">
+                                    Forgot your password?
+                                </Link>
+                            </div>
+                            <Input id="password" type="password" required />
+                        </div>
+                        <Button type="submit" className="w-full">
+                            Login
+                        </Button>
+                        <Button variant="outline" className="w-full">
+                            Login with Google
+                        </Button>
                     </div>
-                </form> */}
-                <div className="relative mb-2 mt-2">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
+                    <div className="mt-4 text-center text-sm">
+                        Don&apos;t have an account?{" "}
+                        <Link href="register" className="underline">
+                            Sign up
+                        </Link>
                     </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                            Or continue with
-                        </span>
-                    </div>
-                </div>
-                {/* <Button
-                    className="w-full mt-2 mb-2"
-                    variant="outline"
-                    type="button"
-                    disabled={isLoading}
-                    onClick={() => signIn("github")}
-                >
-                    <FaGithub className="m-2" size={16} />
-                    GitHub
-                </Button> */}
-                {/* <Link href="/guestuser"><Button className="w-full mt-2 mb-2"
-                    variant="outline"
-                    type="button"
-                    disabled={isLoading}>Guest User</Button></Link> */}
-                {/* <Button
-                    className="w-full mt-2 mb-2"
-                    variant="outline"
-                    type="button"
-                    disabled={isLoading}
-                >
-                    <FaGoogle className="m-2" size={16} />
-                    Google
-                </Button> */}
-                <div className="relative mt-2 mb-2 cursor-pointer">
-                    <div className="relative flex justify-center text-xs uppercase underline">
-                      <Link href="/register">
-                      <span className="bg-background px-2 text-muted-foreground">
-                            Do not have an account? Sign Up{" "}
-                            
-                        </span>
-                      </Link>
-                        
-                    </div>
-                </div>
-            </div>
+                </CardContent>
+            </Card>
+
         </div>
-  )
+    )
 }
 
 export default page
