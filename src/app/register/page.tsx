@@ -28,7 +28,10 @@ export default function page() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     
-    const handleSubmit = async () => {
+    const handleSubmit = async (e:any) => {
+        e.preventDefault()
+        
+        
         try {
             setLoading(true)
             const response = await PostData({ email, name, username, password }, "/api/register")

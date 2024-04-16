@@ -1,6 +1,6 @@
-"use client";
+"use client"
 import Link from "next/link"
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 import { FaGithub } from "react-icons/fa";
@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from 'next/navigation'
 
 import {
     Card,
@@ -18,9 +17,39 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { PostData } from "../utils/api";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { ToastAction } from "@radix-ui/react-toast";
 type Props = {}
 
-const page = (props: Props) => {
+const page =  (props: Props) => {
+    const router = useRouter();
+    const { toast } = useToast()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+        try {
+            const response = await PostData({ email, password }, "/login")
+            toast({
+                variant: "success",
+                title: "User Logged in ",
+                description: "Your user account has been successfully created.",
+            });
+            router.push("/")
+        }
+        catch (error) {
+            let errorMessage = "There was a problem creating your account. Please try again later.";
+
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: errorMessage,
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+            });
+        }
+    }
     return (
         <div className="flex h-screen items-center justify-center">
 
@@ -37,9 +66,11 @@ const page = (props: Props) => {
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
+                                value={email}
                                 id="email"
                                 type="email"
                                 placeholder="m@example.com"
+                                onChange={(e) => { setEmail(e.target.value) }}
                                 required
                             />
                         </div>
@@ -50,9 +81,9 @@ const page = (props: Props) => {
                                     Forgot your password?
                                 </Link>
                             </div>
-                            <Input id="password" type="password" required />
+                            <Input id="password" type="password" required onChange={(e) => { setPassword(e.target.value) }} />
                         </div>
-                        <Button type="submit" className="w-full">
+                        <Button type="submit" className="w-full" onClick={handleSubmit}>
                             Login
                         </Button>
                         <Button variant="outline" className="w-full">
