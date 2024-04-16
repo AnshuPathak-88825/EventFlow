@@ -1,5 +1,7 @@
 "use client"
 import Link from "next/link"
+import { ReloadIcon } from "@radix-ui/react-icons"
+import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -11,15 +13,47 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { PostData } from "../utils/api"
+import { ToastAction } from "@/components/ui/toast"
 
+import { useToast } from "@/components/ui/use-toast"
 export default function page() {
+    const router = useRouter()
+
+    const { toast } = useToast();
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const handleSubmit=()=>{
-        console.log("hello");
+    const [loading, setLoading] = useState(false);
+    
+    const handleSubmit = async () => {
+        try {
+            setLoading(true)
+            const response = await PostData({ email, name, username, password }, "/api/register")
+            setLoading(false);
+            toast({
+                variant: "success",
+                title: "Account Created",
+                description: "Your user account has been successfully created.",
+            });
+            setPassword("");
+            setEmail("");
+            setName("")
+            setUsername("")
+            router.push("/")
+        }
+        catch (error) {
+            let errorMessage = "There was a problem creating your account. Please try again later.";
+
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: errorMessage,
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+            });
+        }
     }
     return (
         <div className="flex h-screen items-center  justify-center">
@@ -34,12 +68,12 @@ export default function page() {
                     <div className="grid gap-4">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="grid gap-2">
-                                <Label htmlFor="first-name">First name</Label>
-                                <Input id="first-name" placeholder="Max" required onChange={(e) => { setName(e.target.value) }} />
+                                <Label htmlFor="first-name">Name</Label>
+                                <Input id="first-name" placeholder="Max" value={name} required onChange={(e) => { setName(e.target.value) }} />
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="last-name">UserName</Label>
-                                <Input id="last-name" placeholder="Robinson_pych" required onChange={(e) => { setUsername(e.target.value) }} />
+                                <Label htmlFor="last-name">User name</Label>
+                                <Input id="last-name" placeholder="Robinson_pych" value={username} required onChange={(e) => { setUsername(e.target.value) }} />
                             </div>
                         </div>
                         <div className="grid gap-2">
@@ -48,17 +82,21 @@ export default function page() {
                                 id="email"
                                 type="email"
                                 placeholder="m@example.com"
+                                value={email}
                                 required
                                 onChange={(e) => { setEmail(e.target.value) }}
                             />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" onChange={(e) => { setPassword(e.target.value) }} />
+                            <Input id="password" type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
                         </div>
-                        <Button type="submit" className="w-full" onClick={handleSubmit}>
+                        {loading ? (<Button disabled>
+                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                            Please wait
+                        </Button>) : (<Button type="submit" className="w-full" onClick={handleSubmit} disabled={loading}>
                             Create an account
-                        </Button>
+                        </Button>)}
                         <Button variant="outline" className="w-full" >
                             Sign up with Google
                         </Button>
