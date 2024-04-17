@@ -20,7 +20,7 @@ export default function Home() {
   },[])
   return (
     <main className="">
-      <Navbar user={user} />
+      <Navbar user={user} setUserData={setUserData} />
     </main>
   );
 }

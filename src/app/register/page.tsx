@@ -36,11 +36,10 @@ export default function page() {
             setLoading(true)
             const response = await PostData({ email, name, username, password }, "/api/register")
             setLoading(false);
+            
             toast({
-                variant: "success",
-                title: "Account Created",
                 description: "Your user account has been successfully created.",
-            });
+              })
             setPassword("");
             setEmail("");
             setName("")

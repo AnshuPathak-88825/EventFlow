@@ -32,11 +32,10 @@ const page = (props: Props) => {
         event.preventDefault();
         try {
             const response = await PostData({ email, password }, "/api/login")
+           
             toast({
-                variant: "success",
-                title: "User Logged in ",
                 description: "Your user account has been successfully created.",
-            });
+              })
             router.push("/")
         }
         catch (error) {

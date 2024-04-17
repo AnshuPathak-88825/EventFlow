@@ -10,13 +10,21 @@ import {
     DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import axios from "axios"
 interface UserType {
     name: string,
     email: string,
     username: string,
 }
 export function UserNav({ user }: any) {
-
+    const logoutHandler = async () => {
+        try {
+            const resposne = await axios.delete("/api/logout");
+            
+        } catch (error) {
+            console.log("failed to logout user");
+        }
+    }
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -53,7 +61,7 @@ export function UserNav({ user }: any) {
                     <DropdownMenuItem>New Team</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={logoutHandler}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>
