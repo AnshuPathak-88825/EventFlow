@@ -8,9 +8,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
         await dbconnect();
         const { email, name, username, password } = await req.json();
         const existingUser = await User.findOne({ email });
-        const jwtsecret = await process.env.JWT_TOKEN || "hafsdasfasfasdfsdafasdf";
         if (existingUser) {
-            const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwtsecret, { expiresIn: "1y" });
+            const jwt_secret = await process.env.JWT_SECRET;
+            if (!jwt_secret) {
+                  throw new Error("Internal server Error ");
+                
+            }
+            const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwt_secret, { expiresIn: "1y" });
             const response = NextResponse.json(existingUser);
             return response
 
@@ -18,19 +22,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const hashedpassword = await bcrypt.hash(password, 10);
         const newUser = new User({ email, username, password: hashedpassword, name });
-
-
-        const token = jwt.sign({ email: newUser.email, id: newUser._id }, jwtsecret, { expiresIn: "1y" });
         await newUser.save()
-
-
-        const response = NextResponse.json(newUser);
-        response.cookies.set('User', token);
+        const jwt_secret = await process.env.JWT_SECRET;
+        if (!jwt_secret) {
+            throw new Error("Internal server Error ");
+        }
+        const token = jwt.sign({ email: newUser.email, id: newUser._id }, jwt_secret, { expiresIn: "1y" });
+        const response = NextResponse.json(existingUser);
+        response.cookies.set("User", token);
         return response;
     }
     catch (error) {
         console.log("Error while register user data");
-        return NextResponse.json("Errorwhile posting data");
+        return NextResponse.json("Errorwhile posting data"+Error,{status:500});
     }
 
 }

@@ -4,7 +4,10 @@ type Props = {}
 import { ModeToggle } from '../component/ModeToggle'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-const Navbar = (props: Props) => {
+import { UserNav } from "../component/user-nav"
+
+const Navbar = ({ user }: any) => {
+  // console.log(user);
   return (
     <div className="flex border-b mb-[50px]	justify-between		  ">
       <div className="font-bold p-4 ">
@@ -17,9 +20,14 @@ const Navbar = (props: Props) => {
       <div className="flex justify-center items-center pr-8 ">
         <div className="p-1"><ModeToggle /></div>
         <div className="p-1">
-           <Link href={"/login"}><Button variant="ghost" className="m-1" >Signin</Button></Link>
-          <Link href={"/register"}><Button className="m-1" >Signup</Button></Link>
-          {/* {session?.user && <ProfileButton user={session.user} />} */} 
+          {user ? (
+            <UserNav user={user} />
+          ) : (
+            <div>
+              <Link href="/login" passHref><Button variant="ghost" className="m-1">Signin</Button></Link>
+              <Link href="/register" passHref><Button className="m-1">Signup</Button></Link>
+            </div>
+          )}
         </div>
       </div>
 

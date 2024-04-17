@@ -20,22 +20,22 @@ export async function POST(req: NextRequest, res: NextResponse): Promise<NextRes
         }
 
         if (!existingUser) {
-            return NextResponse.json("User not found");
+            return NextResponse.json("User not found",{status:500});
         }
 
         const passwordMatch = await bcrypt.compare(password, existingUser.password);
         if (!passwordMatch) {
-            return NextResponse.json("Incorrect password");
+            return NextResponse.json("Incorrect password",{status:500});
         }
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwt_secret, { expiresIn: "1y" });
-        const response = NextResponse.json(existingUser);
+        const response = NextResponse.json(existingUser,{status:200});
         response.cookies.set("User", token);
         return response;
 
 
     } catch (error) {
         console.error("Error while logging in:", error);
-        return NextResponse.json("Unable to login user");
+        return NextResponse.json("Unable to login user",{status:500});
     }
 }

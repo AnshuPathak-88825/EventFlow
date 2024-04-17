@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 import { ToastAction } from "@radix-ui/react-toast";
 type Props = {}
 
-const page =  (props: Props) => {
+const page = (props: Props) => {
     const router = useRouter();
     const { toast } = useToast()
     const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ const page =  (props: Props) => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await PostData({ email, password }, "/login")
+            const response = await PostData({ email, password }, "/api/login")
             toast({
                 variant: "success",
                 title: "User Logged in ",

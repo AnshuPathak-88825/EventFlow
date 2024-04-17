@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     try {
         const cookie = await req.cookies.get("User");
         if (!cookie) {
-            return NextResponse.json("Data not available");
+            throw new Error("User not logged in ")
         }
 
         const jwt_secret = await process.env.JWT_SECRET;
@@ -36,6 +36,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
     catch (error) {
         console.error("Error:", error);
-        return NextResponse.json("Error"+error);
+        return NextResponse.json({ error: "User not logged in "}, { status: 500 })
     }
 }
