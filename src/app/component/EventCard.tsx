@@ -24,16 +24,47 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
+interface EventData {
+    _id: string;
+    title: string;
+    description: string;
+    time: string;
+    venue: string;
+    admin: string;
+    md: string;
+    attendees: string[];
+    __v: number;
+}
+interface Props {
+    Event: EventData
+}
 
-export function DemoGithub() {
+const EventCard: React.FC<Props> = ({ Event }) => {
+    const date = Event.time;
+    const dateObject = new Date(date);
+
+    const options = {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+    };
+
+    const formattedDate = dateObject.toLocaleDateString('en-US', options);
+
+
     return (
         <Card>
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
                 <div className="space-y-1">
-                    <CardTitle>shadcn/ui</CardTitle>
+                    <CardTitle>
+                        <Link href={`/event/${Event.title}`}>
+                        <Button variant="link">{Event.title}</Button>
+                        </Link>
+                        
+                    </CardTitle>
                     <CardDescription>
-                        Beautifully designed components that you can copy and paste into
-                        your apps. Accessible. Customizable. Open Source.
+                        {Event.description}
                     </CardDescription>
                 </div>
                 <div className="flex items-center space-x-1 rounded-md bg-secondary text-secondary-foreground">
@@ -73,15 +104,16 @@ export function DemoGithub() {
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
                         <CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
-                        TypeScript
+                        {Event.venue}
                     </div>
                     <div className="flex items-center">
                         <StarIcon className="mr-1 h-3 w-3" />
                         20k
                     </div>
-                    <div>Updated April 2023</div>
+                    <div>{formattedDate}</div>
                 </div>
             </CardContent>
         </Card>
     )
 }
+export default EventCard;
