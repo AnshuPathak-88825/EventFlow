@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
-import dbConnect from "../../../../db";
-import EventMode from "../../../../models/Event";
+import dbConnect from "../../../../../db";
+import EventMode from "../../../../../models/Event";
 
 export async function POST(req: NextRequest, res: NextResponse) {
     try {

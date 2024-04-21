@@ -69,6 +69,6 @@ const EventModeSchema = new Schema({
         }
     }]
 });
-const EventMode = mongoose.models.EventMode || mongoose.model<EventAttributes,EventModel>("User", EventModeSchema);
+const EventMode = mongoose.models.EventMode || mongoose.model<EventAttributes,EventModel>("EventMode", EventModeSchema);
 
 export default EventMode;
