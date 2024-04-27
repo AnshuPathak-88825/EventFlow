@@ -15,7 +15,7 @@ const page = (props: Props) => {
   useEffect(() => {
     const load_data = async () => {
       try {
-        const data = await FetchData("/api/event/get");
+        const data = await FetchData("/api/event/allget");
         setEvent(data);
         setloading(false);
       } catch (error) {
@@ -34,7 +34,6 @@ const page = (props: Props) => {
       {loading && events ? (<div>      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       </div>) :
         <div className=''>
-
           {events.map((events) => <div className='w-3/4' > <EventCard Event={events} /></div>)}
         </div>
 

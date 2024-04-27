@@ -58,7 +58,7 @@ const EventCard: React.FC<Props> = ({ Event }) => {
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
                 <div className="space-y-1">
                     <CardTitle>
-                        <Link href={`/event/${Event.title}`}>
+                        <Link href={`/events/${Event.title}`}>
                         <Button variant="link">{Event.title}</Button>
                         </Link>
                         
